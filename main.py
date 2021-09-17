@@ -1,30 +1,24 @@
+from libs.json_viewer import JsonView
+from file_viewer import FileViewer
 from PyQt5 import QtWidgets
 from audit_parser import AuditParser
 import os
 import typing
-from PyQt5 import QtCore
-from PyQt5 import QtGui
-from PyQt5.QtCore import QLine, QSize, Qt
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QAction,
     QApplication,
-    QCheckBox,
     QDialog,
     QDialogButtonBox,
     QFileDialog,
     QGridLayout,
+    QHBoxLayout,
     QLabel,
-    QLayout,
     QLineEdit,
     QMainWindow,
     QMessageBox,
     QPushButton,
-    QScrollArea,
-    QSizePolicy,
-    QStatusBar,
-    QToolBar,
-    QVBoxLayout,
     QWidget
 )
 import sys
@@ -37,34 +31,23 @@ class MainWindow(QMainWindow):
         self.setFixedWidth(800)
         self.setFixedHeight(500)
 
-        self.layout = QVBoxLayout()
+        self.layout = QHBoxLayout()
         self.layout.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
-
-        self.file_content = QLabel("Welcome!")
-        self.file_content.setWordWrap(True)
-        self.file_content.setStyleSheet("padding: 10px")
-        self.file_content.setFixedWidth(750)
-        self.file_content.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Minimum)
-        self.file_content.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        self.scrollArea = QScrollArea()
-        self.scrollArea.setWidget(self.file_content)
-        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-
-
-        self.layout.addWidget(self.scrollArea)
 
         self.mainWidget = QWidget(self)
         self.mainWidget.setLayout(self.layout)
         self.setCentralWidget(self.mainWidget)
 
+        self.create_menu()
 
-        open_file_btn = QAction(QIcon("bug.png"), "Open file", self)
+
+    
+    def create_menu(self):
+        open_file_btn = QAction("Open file", self)
         open_file_btn.setStatusTip("Open File")
         open_file_btn.triggered.connect(self.on_open_file_btn_clicked)
 
-        convert_file_btn = QAction(QIcon("bug.png"), "Parse audit file", self)
+        convert_file_btn = QAction("Parse audit file", self)
         convert_file_btn.setStatusTip("Parse audit file")
         convert_file_btn.triggered.connect(self.on_parse_audit_clicked)
 
@@ -76,14 +59,13 @@ class MainWindow(QMainWindow):
 
 
     def on_parse_audit_clicked(self, s):
-        dlg = CustomDialog(self)
+        dlg = ParseFileDialog( self.layout, self)
         if dlg.exec():
             print("Success")
         else:
             print("Cancel")
 
 
-    # TODO: restrict file type
     def on_open_file_btn_clicked(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open file", "", "HTML documents (*.html);Text documents (*.txt);All files (*.*)")
         
@@ -95,9 +77,6 @@ class MainWindow(QMainWindow):
                 content = file.read()
 
             self.file_content.setText(content)
-            self.file_content.setFixedWidth(750)
-         #   self.file_content.setStyleSheet("background-color:red")
-
             self.file_content.adjustSize()
             
             print(content)
@@ -108,15 +87,18 @@ class MainWindow(QMainWindow):
             dlg.show()
 
 
-class CustomDialog(QDialog):
-    def __init__(self, parent: typing.Optional[QWidget]) -> None:
+    def on_save_file_btn_clicked(self):
+        pass
+
+
+class ParseFileDialog(QDialog):
+    def __init__(self, main_window_layout, parent: typing.Optional[QWidget]) -> None:
         super().__init__(parent=parent)
 
+        self.main_window_layout = main_window_layout
         self.setWindowTitle("Select file")
 
         QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
-
-     #   self.accepted.connect(self.save_file)
         
         self.buttonBox = QDialogButtonBox(QBtn)
         self.buttonBox.accepted.connect(self.accept)
@@ -145,7 +127,7 @@ class CustomDialog(QDialog):
         self.setLayout(self.layout)
 
     def on_select_file_button_clicked(self):
-            path, _ = QFileDialog.getOpenFileName(self, "Open file", "", "HTML documents (*.html);Text documents (*.txt);All files (*.*)")
+            path, _ = QFileDialog.getOpenFileName(self, "Open file", "",  "Audit files (*.audit)", )
             head, tail = os.path.split(path)
             filename = tail.split('.')[0]
             
@@ -168,6 +150,8 @@ class CustomDialog(QDialog):
             with open(save_path, 'w') as file:
                 file.write(parsed_content)
 
+            self.main_window_layout.addWidget(JsonView(save_path))
+            
             super().accept()
         except Exception as e:
             dlg = QMessageBox(self)

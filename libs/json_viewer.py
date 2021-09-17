@@ -10,6 +10,7 @@ import sys
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import QLine, QSize, Qt
 
 class TextToTreeItem:
 
@@ -31,6 +32,7 @@ class TextToTreeItem:
                 titem_list.append(self.titem_list[i])
 
         return titem_list
+
 
 
 class JsonView(QtWidgets.QWidget):
@@ -57,6 +59,14 @@ class JsonView(QtWidgets.QWidget):
         self.tree_widget = QtWidgets.QTreeWidget()
         self.tree_widget.setHeaderLabels(["Key", "Value"])
         self.tree_widget.header().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.tree_widget.header().setStretchLastSection(True)
+        self.tree_widget.horizontalScrollBar().setEnabled(True)
+        self.tree_widget.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.tree_widget.setColumnWidth(0, 3000)
+        self.tree_widget.resizeColumnToContents(0)
+        
+        self.tree_widget.header().setStretchLastSection(False)
+        self.tree_widget.header().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
 
         root_item = QtWidgets.QTreeWidgetItem(["Root"])
         self.recurse_jdata(jdata, root_item)
@@ -145,10 +155,9 @@ class JsonView(QtWidgets.QWidget):
 
 class JsonViewer(QtWidgets.QMainWindow):
 
-    def __init__(self):
+    def __init__(self, fpath):
         super(JsonViewer, self).__init__()
 
-        fpath = sys.argv[1]
         json_view = JsonView(fpath)
 
         self.setCentralWidget(json_view)
