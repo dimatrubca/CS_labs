@@ -150,6 +150,9 @@ class ParseFileDialog(QDialog):
             with open(save_path, 'w') as file:
                 file.write(parsed_content)
 
+            for i in reversed(range(self.main_window_layout.count())): 
+                self.main_window_layout.itemAt(i).widget().setParent(None)
+
             self.main_window_layout.addWidget(JsonView(save_path))
             
             super().accept()
