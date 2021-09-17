@@ -4,7 +4,9 @@ Program to parse ```.audit``` files into ```.json```.
 
 ## Tasks:
 • Import the manually downloaded policies from a predefined trusted location;
+
 • Parse and understand the format of data within the imported policy;
+
 • Save the same set of policies under a different name within a structured form (ex:
 database).
 
