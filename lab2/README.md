@@ -13,4 +13,9 @@ a different one
 - Install requirements: ```pip3 install -r requirements.txt```
 - Launch main program: ```python3 lab2/main.py```
 
+## Video
+
+![](video/lab2.mp4)
+
+
 
