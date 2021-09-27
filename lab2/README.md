@@ -18,7 +18,7 @@ a different one
 ![](https://github.com/dimatrubca/CS_labs/tree/master/lab2/video/lab2.mp4)
 
 <video width="320" height="240" controls>
-  <source src="https://github.com/dimatrubca/CS_labs/tree/master/lab2/video/lab2.mp4" type="video/mp4">
+  <source src="https://github.com/dimatrubca/CS_labs/blob/master/lab2/video/lab2.mp4" type="video/mp4">
 </video>
 
 
