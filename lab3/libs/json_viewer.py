@@ -12,6 +12,8 @@ from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QLine, QSize, Qt
+import subprocess
+import re
 
 class TextToTreeItem:
     def __init__(self):
@@ -112,11 +114,15 @@ class JsonView(QtWidgets.QWidget):
         deselect_all_button = QtWidgets.QPushButton("Deselect All")
         deselect_all_button.clicked.connect(self.deselect_all_button_clicked)
 
+        audit_button = QtWidgets.QPushButton("Audit")
+        audit_button.clicked.connect(self.audit_workstation)
+
         layout = QtWidgets.QHBoxLayout()
         layout.addWidget(self.find_box)
         layout.addWidget(find_button)
         layout.addWidget(select_all_button)
         layout.addWidget(deselect_all_button)
+        layout.addWidget(audit_button)
 
         return layout
 
@@ -169,6 +175,8 @@ class JsonView(QtWidgets.QWidget):
             text_list.append(str(val) )
             row_item = QtWidgets.QTreeWidgetItem([key, str(val)])
 
+       # row_item.setBackground(0, QtGui.QColor('red'))
+
         tree_widget.addChild(row_item)
         self.text_to_titem.append(text_list, row_item)
 
@@ -213,6 +221,47 @@ class JsonView(QtWidgets.QWidget):
                     child.setSelected(True)
                 else:
                     child.setSelected(False)
+
+
+    def audit_workstation(self):
+        root = self.tree_widget.invisibleRootItem().child(0)
+        items_count = root.childCount()
+        
+
+        for i in range(items_count):
+            option = OrderedDict()
+            option_item = root.child(i)
+            #print(option_item.text(0))
+
+            if option_item.checkState(0) == Qt.CheckState.Checked:
+                for j in range(option_item.childCount()):
+                    child = option_item.child(j)
+
+                   # print(child.text(0), child.text(1))
+                    option[child.text(0)] = child.text(1)
+
+            if "cmd" not in option:
+                continue
+
+            try:
+
+                import ast
+                command = option['cmd'][1:-1]
+                expect = ast.literal_eval(f"""\"{option['expect'][1:-1]}\"""")
+
+
+                output = subprocess.getoutput("sudo " + command)
+                regexp = re.compile(f"{expect}", re.MULTILINE)
+
+                if regexp.search(output):
+                    option_item.setBackground(0, QtGui.QColor('green'))
+                    option_item.setText(0, option_item.text(0) + " (Passed)")
+                else:
+                    option_item.setBackground(0, QtGui.QColor('red'))
+            except Exception as e:
+                print(e)
+
+
 
 
 class JsonViewer(QtWidgets.QMainWindow):
