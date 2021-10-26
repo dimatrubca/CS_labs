@@ -1,21 +1,18 @@
-## Lab 2: Creating Custom Audit Policies
+## Lab 3: Auditing a Workstation
+ 
 
 ## Tasks
-- Choose which options they would like to run (by selecting or deselecting options);
-- Search by name for an option (via a search bar);
-- Select or deselect all options in one click;
-- Create and save a policy that contains only the selected options under the same name or
-a different one
+- Perform an audit of the workstation, using the options that were selected
+- Output the results of the audit on screen
 
 ### Usage:
 - Create virtual enviroment ```python3 -m venv venv```
 - Activate virtual enviroment: ```python3 venv/scripts/activate``` (```source/bin/active for Linux```)
 - Install requirements: ```pip3 install -r requirements.txt```
-- Launch main program: ```python3 lab2/main.py```
+- Launch main program: ```python3 lab3/main.py```
 
 ## Video
-
-![](video/lab2.mp4)
+<a href="https://drive.google.com/file/d/17XL4QxIK1xh8tcc9X4pjqRk3ub65JQYt/view?usp=sharing" target="_blank">Link video</a>
 
 
 
