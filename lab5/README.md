@@ -14,7 +14,7 @@
 - Launch main program: ```python3 lab3/main.py```
 
 ## Video
-<a href="https://drive.google.com/file/d/17XL4QxIK1xh8tcc9X4pjqRk3ub65JQYt/view?usp=sharing" target="_blank">Link video</a>
+<a href="https://drive.google.com/file/d/123pZ0I-U5RwMM7M_YAnmdv08EzqnXeza/view?usp=sharing" target="_blank">Link video</a>
 
 
 
