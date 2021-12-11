@@ -1,12 +1,36 @@
-# Getting Started with Create React App
+## Lab 6: SSO Security
+ 
+
+## Tasks
+- Offer user authentication via SSO using at least 3 identity providers (e.g. Facebook,
+Gmail, Twitter etc.);
+- Configure SSO integration to get as much as possible data about the end-user;
+- Output all data which was provided by the identity providers (e.g. user’s name, age,
+gender, email etc.).
+
+
+### Usage:
+- Create virtual enviroment ```python3 -m venv venv```
+- Activate virtual enviroment: ```python3 venv/scripts/activate``` (```source/bin/active for Linux```)
+- Install requirements: ```pip3 install -r requirements.txt```
+- Launch main program: ```python3 lab3/main.py```
+
+## Video
+<a href="https://drive.google.com/file/d/1zWSW4XO5fz3nfYM8vJtHQAoK3ZTWiFci/view?usp=sharing" target="_blank">Link video</a>
+
+
+
+# Ussage:
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### Available Scripts
 
 In the project directory, you can run:
 
-### `yarn start`
+#### `yarn start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
